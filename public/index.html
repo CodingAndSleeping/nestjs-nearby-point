@@ -29,42 +29,31 @@
     <div id="container"></div>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
     ></script>
     <script src="https://unpkg.com/axios@1.5.1/dist/axios.min.js"></script>
-
-
-
     <script>
-      
+
       const map = L.map('container', {
           center: [39.909183,116.397444],
-          zoom: 16
+          zoom: 9
       });
 
-      const tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png')
-      
-      tileLayer.addTo(map);
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-      const radius = 1000;
+      const radius = 60;
       
-     L.circle([39.909183,116.397444], {radius }).addTo(map);
-
+      L.circle([39.909183,116.397444], { radius: radius * 1000 }).addTo(map);
+      
       axios.get('/nearbyPos', {
         params: {
             lng: 116.397444,
             lat: 39.909183,
-            radius: 10
+            radius
         }
-    }).then(res => {
-      res.data.forEach(item => {
-        L.marker([item.latitude, item.longitude]).addTo(map)
+      }).then(res => {
+        res.data.forEach(item => {
+          L.marker([item.latitude, item.longitude]).addTo(map)
+        })
       })
-    })
     </script>
-    
-
-
-
 </html>
